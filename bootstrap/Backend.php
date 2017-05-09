@@ -16,6 +16,17 @@ class Backend extends Bootstrap
      */
     public function bootstrap($app)
     {
+        $this->bootstrapNavigation($app);
+    }
+
+    /**
+     * @param $app
+     */
+    protected function bootstrapNavigation($app): void
+    {
+        if ($app->user->isGuest) {
+            return;
+        }
         /**
          * @var Component $navigation
          */
@@ -24,7 +35,7 @@ class Backend extends Bootstrap
             'class' => Configurator::class,
             'module' => 'settings',
             'moduleName' => 'Settings',
-            'modelName' => 'Settings',
+            'modelName' => 'Setting',
             'controller' => 'backend',
         ]);
     }
