@@ -1,0 +1,31 @@
+{
+  "name": "execut/yii2-settings",
+  "description": "Yii2 module for settings managing with CRUD",
+  "keywords": ["yii2 settings"],
+  "homepage": "https://github.com/execut/yii2-settings",
+  "type": "library",
+  "license": "Apache-2.0",
+  "support": {
+    "issues": "https://github.com/execut/yii2-settings/issues?state=open",
+    "wiki": "https://github.com/execut/yii2-settings/wiki",
+    "source": "https://github.com/execut/yii2-settings"
+  },
+  "authors": [
+    {
+      "name": "eXeCUT"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "@dev",
+    "execut/yii2-base": "@dev",
+    "execut/yii2-crud": "@dev",
+    "execut/yii2-crud-fields": "@dev",
+    "execut/yii2-dependencies": "@dev",
+    "execut/yii2-migration": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "execut\\settings\\": ""
+    }
+  }
+}
