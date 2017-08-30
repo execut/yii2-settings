@@ -8,6 +8,7 @@ namespace execut\settings\bootstrap;
 use execut\navigation\Component;
 use execut\crud\navigation\Configurator;
 use execut\yii\Bootstrap;
+use yii\i18n\PhpMessageSource;
 
 class Backend extends Bootstrap
 {
@@ -17,6 +18,7 @@ class Backend extends Bootstrap
     public function bootstrap($app)
     {
         $this->bootstrapNavigation($app);
+        $this->bootstrapI18n($app);
     }
 
     /**
@@ -38,5 +40,12 @@ class Backend extends Bootstrap
             'modelName' => 'Setting',
             'controller' => 'backend',
         ]);
+    }
+
+    public function bootstrapI18n($app) {
+        $app->i18n->translations['execut/settings'] = [
+            'class' => PhpMessageSource::class,
+            'basePath' => 'vendor/execut/settings/messages',
+        ];
     }
 }
