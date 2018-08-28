@@ -20,7 +20,7 @@ class BackendController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['settings_admin'],
                     ],
                 ],
             ],
