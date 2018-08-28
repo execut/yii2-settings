@@ -31,7 +31,7 @@ class BackendController extends Controller
     {
         $configurator = new Crud([
             'modelClass' => Setting::class,
-            'title' => 'Settings',
+            'modelName' => Setting::MODEL_NAME,
         ]);
 
         return $configurator->actions();

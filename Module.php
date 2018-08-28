@@ -8,7 +8,7 @@ namespace execut\settings;
 use execut\dependencies\PluginBehavior;
 use yii\i18n\PhpMessageSource;
 
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements Plugin
 {
     public function behaviors()
     {
@@ -20,12 +20,7 @@ class Module extends \yii\base\Module
         ];
     }
 
-    public function getPageFieldsPlugins() {
-        $result = [];
-        foreach ($this->getPlugins() as $plugin) {
-            $result = array_merge($result, $plugin->getPageFieldsPlugins());
-        }
-
-        return $result;
+    public function getSettingsCrudFieldsPlugins() {
+        return $this->getPluginsResults(__FUNCTION__);
     }
 }
