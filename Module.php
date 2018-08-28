@@ -25,10 +25,11 @@ class Module extends \yii\base\Module implements Plugin
     }
 
     public function checkHasAccessToSetting($id) {
-        $result = $this->getPluginsResults(__FUNCTION__, true, func_get_args());
-        if ($result === null) {
+        if (!count($this->plugins)) {
             return true;
         }
+
+        $result = $this->getPluginsResults(__FUNCTION__, true, func_get_args());
 
         return $result;
     }
