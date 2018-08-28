@@ -9,6 +9,7 @@
 namespace execut\settings\plugins;
 
 
+use execut\rbac\models\Item;
 use execut\settings\models\VsItem;
 use execut\settings\Plugin;
 
