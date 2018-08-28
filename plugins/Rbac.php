@@ -24,4 +24,16 @@ class Rbac implements Plugin
             ],
         ];
     }
+
+    public function checkHasAccessToSetting($id) {
+        if (\yii::$app->user->can(\yii::$app->getModule('rbac2')->superadminRole)) {
+            return true;
+        }
+
+        return VsItem::find()
+            ->andWhere([
+                'rbac_item_id' => Item::find()->isAllowedForUserId(\yii::$app->user->identity->id)->select('id'),
+                'settings_setting_id' => $id,
+            ])->count() > 0;
+    }
 }

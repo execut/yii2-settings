@@ -23,4 +23,13 @@ class Module extends \yii\base\Module implements Plugin
     public function getSettingsCrudFieldsPlugins() {
         return $this->getPluginsResults(__FUNCTION__);
     }
+
+    public function checkHasAccessToSetting($id) {
+        $result = $this->getPluginsResults(__FUNCTION__, true, func_get_args());
+        if ($result === null) {
+            return true;
+        }
+
+        return $result;
+    }
 }
