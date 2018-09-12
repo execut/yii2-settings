@@ -30,7 +30,8 @@ class BackendController extends Controller
 
     public function beforeAction($action)
     {
-        if ($id = \yii::$app->request->getQueryParam('id')) {
+        if ($action->id === 'update' || $action->id === 'delete') {
+            $id = \yii::$app->request->getQueryParam('id');
             if (!$this->module->checkHasAccessToSetting($id)) {
                 throw new NotAcceptableHttpException('Доступ к записи запрещён');
             }

@@ -31,6 +31,10 @@ class Rbac implements Plugin
             return true;
         }
 
+        if (empty($id)) {
+            return false;
+        }
+
         return VsItem::find()
             ->andWhere([
                 'rbac_item_id' => Item::find()->isAllowedForUserId(\yii::$app->user->identity->id)->select('id'),
