@@ -17,6 +17,16 @@ class Setting extends ActiveRecord
 {
     const MODEL_NAME = '{n,plural,=0{Settings} =1{Setting} other{Settings}}';
     use BehaviorStub;
+
+    public static function findOrCreateByKey($key) {
+        $result = self::find()->byKey($key)->one();
+        if (!$result) {
+            $result = new static();
+        }
+
+        return $result;
+    }
+
     public function behaviors()
     {
         return ArrayHelper::merge(
