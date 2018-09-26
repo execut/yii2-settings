@@ -16,6 +16,7 @@ use yii\i18n\PhpMessageSource;
 
 class Backend extends Common
 {
+    protected $isBootstrapI18n = true;
     public function getDefaultDepends(){
         return ArrayHelper::merge(parent::getDefaultDepends(), [
             'modules' => [
@@ -32,7 +33,6 @@ class Backend extends Common
     {
         parent::bootstrap($app);
         $this->bootstrapNavigation($app);
-        $this->bootstrapI18n($app);
     }
 
     /**
@@ -54,15 +54,5 @@ class Backend extends Common
             'modelName' => Setting::MODEL_NAME,
             'controller' => 'backend',
         ]);
-    }
-
-    public function bootstrapI18n($app) {
-        $app->i18n->translations['execut/settings'] = [
-            'class' => PhpMessageSource::class,
-            'basePath' => '@vendor/execut/yii2-settings/messages',
-            'fileMap' => [
-                'execut/settings' => 'settings.php',
-            ],
-        ];
     }
 }
