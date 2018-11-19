@@ -20,6 +20,6 @@ class VsItem extends ActiveRecord
 
     public function rules()
     {
-        return [[['rbac_item_id', 'settings_setting_id'], 'safe']];
+        return [[['rbac_item_id', 'settings_setting_id'], 'safe', 'on' => [self::SCENARIO_DEFAULT, 'form']]];
     }
 }
