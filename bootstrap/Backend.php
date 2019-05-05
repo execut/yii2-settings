@@ -38,9 +38,11 @@ class Backend extends Common
     /**
      * @param $app
      */
-    protected function bootstrapNavigation($app): void
+    protected function bootstrapNavigation($app)
     {
-        if ($app instanceof Application || $app->user->isGuest || !$app->user->can('settings_admin')) {
+
+        $module = $app->getModule('settings');
+        if (!(!$app->user->isGuest && $module->adminRole === '@') && !$app->user->can($module->adminRole)) {
             return;
         }
         /**

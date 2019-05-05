@@ -10,6 +10,7 @@ use yii\i18n\PhpMessageSource;
 
 class Module extends \yii\base\Module implements Plugin
 {
+    public $adminRole = '@';
     public function behaviors()
     {
         return [
@@ -21,7 +22,12 @@ class Module extends \yii\base\Module implements Plugin
     }
 
     public function getSettingsCrudFieldsPlugins() {
-        return $this->getPluginsResults(__FUNCTION__);
+        $fields = $this->getPluginsResults(__FUNCTION__);
+        if (empty($fields)) {
+            $fields = [];
+        }
+
+        return $fields;
     }
 
     public function checkHasAccessToSetting($id) {
