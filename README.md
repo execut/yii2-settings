@@ -34,6 +34,7 @@ Add module bootstrap to backend application config:
     ...
     ],
 ```
+
 Add module bootstrap to common application config:
 ```php
     'bootstrap' => [
