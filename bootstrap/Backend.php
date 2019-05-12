@@ -5,11 +5,11 @@
 namespace execut\settings\bootstrap;
 
 
+use execut\actions\Bootstrap;
 use execut\navigation\Component;
 use execut\crud\navigation\Configurator;
 use execut\settings\models\Setting;
 use execut\settings\Module;
-use execut\yii\Bootstrap;
 use yii\console\Application;
 use yii\helpers\ArrayHelper;
 use yii\i18n\PhpMessageSource;
@@ -22,6 +22,17 @@ class Backend extends Common
             'modules' => [
                 'settings' => [
                     'class' => Module::class,
+                ],
+            ],
+            'bootstrap' => [
+                'actions' => [
+                    'class' => Bootstrap::class,
+                ],
+                'crud' => [
+                    'class' => \execut\crud\Bootstrap::class,
+                ],
+                'navigation' => [
+                    'class' => \execut\navigation\Bootstrap::class,
                 ],
             ],
         ]);

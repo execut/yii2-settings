@@ -21,6 +21,11 @@ class Console extends Common
                     'controllerNamespace' => 'execut\settings\commands',
                 ],
             ],
+            'bootstrap' => [
+                'actions' => [
+                    'class' => \execut\actions\bootstrap\Console::class,
+                ],
+            ]
         ]);
     }
 }
