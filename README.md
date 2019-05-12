@@ -86,7 +86,7 @@ For more information about execut/yii2-navigation module, please read it [docume
 ### Usage
 #### Settings administration
 
-![Settings list](https://github.com/execut/yii2-settings/docs/list.jpg)
+![Settings list](https://raw.githubusercontent.com/execut/yii2-settings/master/docs/list.jpg)
 
 Section contains the following columns:
 
@@ -99,7 +99,7 @@ Value | Setting value
 
 For example, we want to manage the site name. To do this, add a setting with the key site_name:
 
-![Setting edit](https://github.com/execut/yii2-settings/docs/edit.jpg)
+![Setting edit](https://raw.githubusercontent.com/execut/yii2-settings/master/docs/edit.jpg)
 
 On the website we can display this parameter using this line:
 ```php
