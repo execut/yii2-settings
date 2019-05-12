@@ -1,5 +1,6 @@
 # yii2-settings
-Yii2 module for application configuring via administrate crud settings
+Yii2 module for application configuring via administrate crud settings. The module can used both separately and as part
+of the [execut/yii2-cms](https://github.com/execut/yii2-cms).
 
 ## Installation
 
