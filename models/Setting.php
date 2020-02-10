@@ -38,7 +38,7 @@ class Setting extends ActiveRecord
     public static function findByKey($key)
     {
         $cache = \yii::$app->cache;
-        if ($result = $cache->get(self::getCacheKey($key))) {
+        if ($cache && ($result = $cache->get(self::getCacheKey($key)))) {
             if ($result === true) {
                 return;
             }
@@ -51,7 +51,10 @@ class Setting extends ActiveRecord
             $result = true;
         }
 
-        $cache->set(self::getCacheKey($key), $result);
+        if ($cache) {
+            $cache->set(self::getCacheKey($key), $result);
+        }
+
         if ($result === true) {
             return;
         }
