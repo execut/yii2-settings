@@ -5,10 +5,11 @@
 namespace execut\settings;
 
 
+use execut\actions\HelpModule;
 use execut\dependencies\PluginBehavior;
 use yii\i18n\PhpMessageSource;
 
-class Module extends \yii\base\Module implements Plugin
+class Module extends \yii\base\Module implements Plugin, HelpModule
 {
     public $adminRole = '@';
     public function behaviors()
@@ -38,5 +39,9 @@ class Module extends \yii\base\Module implements Plugin
         $result = $this->getPluginsResults(__FUNCTION__, true, func_get_args());
 
         return $result;
+    }
+
+    public function getHelpUrl() {
+        return 'https://github.com/execut/yii2-settings/wiki';
     }
 }

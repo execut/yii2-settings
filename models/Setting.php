@@ -169,8 +169,8 @@ class Setting extends ActiveRecord
 
     protected function getTypesList() {
         return [
-            self::TYPE_SIMPLE => 'Обычный',
-            self::TYPE_EDITOR => 'Редактор',
+            self::TYPE_SIMPLE => \yii::t('execut/settings', 'Simple'),
+            self::TYPE_EDITOR => \yii::t('execut/settings', 'Editor'),
         ];
     }
 

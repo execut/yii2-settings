@@ -97,6 +97,7 @@ Name|Description
 Id | DB identifier
 Name | Setting description
 Key | Key for getting setting value from code
+Type | Editor (WYSIWYG HTML editor) or simple (simple string value)
 Value | Setting value
 
 For example, we want to manage the site name. To do this, add a setting with the key site_name:
