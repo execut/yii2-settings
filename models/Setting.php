@@ -2,10 +2,15 @@
 
 namespace execut\settings\models;
 
+use execut\actions\widgets\DetailView;
 use execut\crudFields\Behavior;
 use execut\crudFields\BehaviorStub;
+use execut\crudFields\fields\DropDown;
+use execut\crudFields\fields\Editor;
+use execut\crudFields\fields\HasOneSelect2;
 use execut\crudFields\fields\Id;
 use execut\crudFields\fields\Textarea;
+use execut\crudFields\widgets\FieldsSwitchDropdown;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -17,6 +22,13 @@ class Setting extends ActiveRecord
 {
     const MODEL_NAME = '{n,plural,=0{Settings} =1{Setting} other{Settings}}';
     use BehaviorStub;
+    const TYPE_SIMPLE = 'simple';
+    const TYPE_EDITOR = 'editor';
+    const ALL_TYPES = [
+        self::TYPE_SIMPLE,
+        self::TYPE_EDITOR,
+    ];
+    public $value_editor = null;
 
     public static function findOrCreateByKey($key) {
         $result = self::findByKey($key);
@@ -71,6 +83,12 @@ class Setting extends ActiveRecord
 
     public function behaviors()
     {
+        if ($module = \yii::$app->getModule('settings')) {
+            $settingsCrudFieldsPlugins = $module->getSettingsCrudFieldsPlugins();
+        } else {
+            $settingsCrudFieldsPlugins = [];
+        }
+
         return ArrayHelper::merge(
             parent::behaviors(),
             [
@@ -89,12 +107,55 @@ class Setting extends ActiveRecord
                             'required' => true,
                             'attribute' => 'key',
                         ],
+                        'type' => [
+                            'class' => DropDown::class,
+                            'required' => true,
+                            'attribute' => 'type',
+                            'defaultValue' => 'simple',
+                            'data' => $this->getTypesList(),
+                            'field' => [
+                                'type' => DetailView::INPUT_WIDGET,
+                                'widgetOptions' => [
+                                    'class' => FieldsSwitchDropdown::class,
+                                    'data' => $this->getTypesList(),
+                                    'clientOptions' => [
+                                        'depends' => [
+                                            self::TYPE_SIMPLE => [
+                                                '.setting-value',
+                                            ],
+                                            self::TYPE_EDITOR => [
+                                                '.setting-value-editor',
+                                            ],
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
                         [
                             'class' => Textarea::class,
                             'attribute' => 'value',
+                            'field' => [
+                                'rowOptions' => [
+                                    'class' => 'setting-value',
+                                ],
+                            ]
+                        ],
+                        [
+                            'class' => Editor::class,
+                            'attribute' => 'value',
+                            'field' => [
+                                'rowOptions' => [
+                                    'class' => 'setting-value-editor',
+                                ],
+                                'options' => [
+                                    'id' => 'setting-value-editor'
+                                ]
+                            ],
+                            'rules' => false,
+                            'column' => false,
                         ],
                     ],
-                    'plugins' => \yii::$app->getModule('settings')->getSettingsCrudFieldsPlugins(),
+                    'plugins' => $settingsCrudFieldsPlugins,
                 ],
                 # custom behaviors
             ]
@@ -104,6 +165,13 @@ class Setting extends ActiveRecord
     public function __toString()
     {
         return '#' . $this->id;
+    }
+
+    protected function getTypesList() {
+        return [
+            self::TYPE_SIMPLE => 'Обычный',
+            self::TYPE_EDITOR => 'Редактор',
+        ];
     }
 
     /**
