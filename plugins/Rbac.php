@@ -21,7 +21,7 @@ class Rbac implements Plugin
                 'class' => \execut\rbac\crudFields\Plugin::class,
                 'vsItemsClass' => VsItem::class,
                 'linkAttribute' => 'settings_setting_id',
-                'isLimitByActiveUserItems' => true,
+//                'isLimitByActiveUserItems' => true,
             ],
         ];
     }
