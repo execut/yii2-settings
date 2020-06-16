@@ -13,14 +13,7 @@ return [
     'components' => [
         'assetManager' => [
             'basePath' => __DIR__ . '/../assets/',
-            'bundles' => [
-                \detalika\search\widgets\UniqueNumbersListAsset::class => [
-                    'depends' => [],
-                ],
-                \detalika\goods\widgets\ArticlesListAsset::class => [
-                    'depends' => [],
-                ]
-            ]
+            'bundles' => []
         ],
         'i18n' => [
             'translations' => [
