@@ -31,14 +31,14 @@ class Module extends \yii\base\Module implements Plugin, HelpModule
         return $fields;
     }
 
-    public function checkHasAccessToSetting($id) {
+    public function checkHasAccessToSetting(int $id):bool {
         if (!count($this->plugins)) {
             return true;
         }
 
         $result = $this->getPluginsResults(__FUNCTION__, true, func_get_args());
 
-        return $result;
+        return (bool) $result;
     }
 
     public function getHelpUrl() {

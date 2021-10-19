@@ -16,15 +16,4 @@ class m200218_114608_addType extends Migration
             ->alterColumnSetNotNull('type')
         ;
     }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

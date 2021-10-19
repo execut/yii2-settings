@@ -15,6 +15,8 @@ use execut\crudFields\fields\reloader\Reloader;
 use execut\crudFields\fields\reloader\Target;
 use execut\crudFields\fields\reloader\type\Dependent;
 use execut\crudFields\fields\Textarea;
+use execut\crudFields\fields\Time;
+use execut\crudFields\ModelsHelperTrait;
 use execut\crudFields\widgets\FieldsSwitchDropdown;
 use Yii;
 use yii\db\ActiveRecord;
@@ -26,12 +28,17 @@ use yii\helpers\ArrayHelper;
 class Setting extends ActiveRecord
 {
     const MODEL_NAME = '{n,plural,=0{Settings} =1{Setting} other{Settings}}';
-    use BehaviorStub;
+    use BehaviorStub, ModelsHelperTrait;
+    const TIME_ATTRIBUTE = 'value_time';
+    const TYPE_ATTRIBUTE = 'type';
+
     const TYPE_SIMPLE = 'simple';
     const TYPE_EDITOR = 'editor';
+    const TYPE_TIME = 'time';
     const ALL_TYPES = [
         self::TYPE_SIMPLE,
         self::TYPE_EDITOR,
+        self::TYPE_TIME,
     ];
     public $value_editor = null;
 
@@ -94,6 +101,14 @@ class Setting extends ActiveRecord
          * @var Field $field
          */
         $field = $this->getField('value');
+        $timeField = $this->getField(self::TIME_ATTRIBUTE);
+        $timeDetailViewField = $timeField->getDetailViewField();
+        if ($this->type === self::TYPE_TIME) {
+            $timeDetailViewField->show();
+        } else {
+            $timeDetailViewField->hide();
+        }
+
         if ($this->type === self::TYPE_SIMPLE) {
             $field->setDetailViewFieldClass(DetailViewField::class);
             $field->setFieldConfig([
@@ -118,42 +133,38 @@ class Setting extends ActiveRecord
 
         $typeField = new DropDown([
             'required' => true,
-            'attribute' => 'type',
+            'attribute' => self::TYPE_ATTRIBUTE,
             'defaultValue' => 'simple',
             'data' => $this->getTypesList(),
         ]);
         $target = new Target($typeField);
         $reloader = new Reloader(new Dependent(), [$target]);
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                'fields' => [
-                    'class' => Behavior::class,
-                    'fields' => [
-                        [
-                            'class' => Id::class,
-                            'attribute' => 'id',
-                        ],
-                        [
-                            'required' => true,
-                            'attribute' => 'name',
-                        ],
-                        [
-                            'required' => true,
-                            'attribute' => 'key',
-                        ],
-                        'type' => $typeField,
-                        'value' => [
-                            'class' => Editor::class,
-                            'attribute' => 'value',
-                            'reloaders' => [$reloader],
-                        ],
-                    ],
-                    'plugins' => $settingsCrudFieldsPlugins,
-                ],
-                # custom behaviors
-            ]
-        );
+        $fields = $this->getStandardFields(['visible', 'created', 'updated'], [
+            'key' => [
+                'required' => true,
+                'attribute' => 'key',
+            ],
+            self::TYPE_ATTRIBUTE => $typeField,
+            'value' => [
+                'class' => Editor::class,
+                'attribute' => 'value',
+                'reloaders' => [$reloader],
+            ],
+            self::TIME_ATTRIBUTE => [
+                'class' => Time::class,
+                'attribute' => self::TIME_ATTRIBUTE,
+                'reloaders' => [$reloader],
+                'displayOnly' => false,
+            ],
+        ]);
+        return [
+            'fields' => [
+                'class' => Behavior::class,
+                'fields' => $fields,
+                'plugins' => $settingsCrudFieldsPlugins,
+            ],
+            # custom behaviors
+        ];
     }
 
     public function __toString()
@@ -165,6 +176,7 @@ class Setting extends ActiveRecord
         return [
             self::TYPE_SIMPLE => \yii::t('execut/settings', 'Simple'),
             self::TYPE_EDITOR => \yii::t('execut/settings', 'Editor'),
+            self::TYPE_TIME => \yii::t('execut/settings', 'Time'),
         ];
     }
 

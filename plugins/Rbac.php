@@ -12,9 +12,28 @@ namespace execut\settings\plugins;
 use execut\rbac\models\Item;
 use execut\settings\models\VsItem;
 use execut\settings\Plugin;
+use yii\db\ActiveQuery;
+
+use \execut\rbac\models\queries\Item as ItemQuery;
 
 class Rbac implements Plugin
 {
+    protected ?ActiveQuery $vsItem;
+    protected ?ItemQuery $itemQuery;
+    public function __construct(ActiveQuery $vsItem = null, ItemQuery $itemQuery = null)
+    {
+        if ($vsItem === null) {
+            $vsItem = VsItem::find();
+        }
+
+        $this->vsItem = $vsItem;
+        if ($itemQuery === null) {
+            $itemQuery = Item::find();
+        }
+
+        $this->itemQuery = $itemQuery;
+    }
+
     public function getSettingsCrudFieldsPlugins() {
         return [
             'items' => [
@@ -26,19 +45,38 @@ class Rbac implements Plugin
         ];
     }
 
-    public function checkHasAccessToSetting($id) {
+    public function checkHasAccessToSetting(int $id):bool {
+        if ($id < 0) {
+            return false;
+        }
+
         if (\yii::$app->user->can(\yii::$app->getModule('rbac2')->superadminRole)) {
             return true;
         }
 
-        if (empty($id)) {
+        if ($id === 0) {
             return false;
         }
 
-        return VsItem::find()
+        $identity = \yii::$app->user->identity;
+        if (!$identity) {
+            return false;
+        }
+
+        return $this->getVsItemQuery()
             ->andWhere([
-                'rbac_item_id' => Item::find()->isAllowedForUserId(\yii::$app->user->identity->id)->select('id'),
+                'rbac_item_id' => $this->getItemQuery()->isAllowedForUserId($identity->getId())->select('id'),
                 'settings_setting_id' => $id,
             ])->count() > 0;
+    }
+
+    public function getVsItemQuery(): ActiveQuery
+    {
+        return $this->vsItem;
+    }
+
+    public function getItemQuery(): ItemQuery
+    {
+        return $this->itemQuery;
     }
 }
