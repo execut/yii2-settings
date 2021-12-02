@@ -18,7 +18,7 @@ class Component extends \yii\base\Component
         if (!isset($this->cache[$key])) {
             $result = Setting::findByKey($key);
             if ($result) {
-                $result = $result->value;
+                $result = $result->getValue();
             } else if (isset($this->defaultSettings[$key])) {
                 $result = $this->defaultSettings[$key];
             } else if ($defaultValue !== null) {
